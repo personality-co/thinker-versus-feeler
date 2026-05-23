@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feeling vs Thinking Test • 40 Questions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <style>
+        body { font-family: 'Inter', system_ui, sans-serif; }
+        input[type="range"] {
+            accent-color: #6366f1;
+            height: 14px;
+            border-radius: 9999px;
+        }
+        .question-card {
+            background-color: #1e2937;
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-white min-h-screen">
+<div class="max-w-4xl mx-auto p-8">
+
+    <!-- START SCREEN -->
+    <div id="start-screen">
+        <div class="text-center mb-12">
+            <h1 class="text-5xl font-bold">Feeling vs Thinking Test</h1>
+            <p class="mt-4 text-xl text-slate-300">40 Questions • MBTI Style</p>
+            <p class="text-sm text-slate-400 mt-6">
+                <span class="text-emerald-400">0</span> = Does not describe me at all • 
+                <span class="text-violet-400">100</span> = Describes me perfectly
+            </p>
+        </div>
+        
+        <div class="flex justify-center mt-16">
+            <button onclick="startTest()" 
+                    class="px-20 py-8 bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white font-semibold text-3xl rounded-3xl shadow-2xl hover:scale-105 transition-all">
+                Begin the Test
+            </button>
+        </div>
+    </div>
+
+    <!-- RULES SCREEN -->
+    <div id="rules-screen" class="hidden">
+        <div class="max-w-2xl mx-auto bg-slate-900 rounded-3xl p-12 text-center">
+            <h2 class="text-4xl font-bold mb-8">Important Instructions</h2>
+            <div class="text-lg leading-relaxed text-slate-200 space-y-6">
+                <p>Please answer based on how you <strong>typically</strong> make decisions and interact with others in everyday life.</p>
+                <p class="text-amber-400 font-medium">
+                    Focus on your natural patterns - not rare exceptions or how you think you should answer.
+                </p>
+            </div>
+
+            <div class="mt-10">
+                <p class="text-sm text-slate-400 mb-3">Type <span class="font-mono text-violet-400">"confirm"</span> to continue</p>
+                <input id="confirm-input" type="text" placeholder="confirm"
+                       class="bg-slate-800 border border-slate-600 rounded-2xl px-8 py-4 text-center text-xl w-64 focus:outline-none focus:border-violet-500">
+            </div>
+
+            <button onclick="checkConfirmation()" 
+                    class="mt-8 px-16 py-6 bg-violet-600 hover:bg-violet-500 rounded-3xl font-semibold text-xl transition-colors">
+                Continue to Questions
+            </button>
+        </div>
+    </div>
+
+    <!-- TEST SCREEN -->
+    <div id="test-screen" class="hidden">
+        <div id="questions-container" class="space-y-14"></div>
+        
+        <div class="flex justify-center mt-20">
+            <button onclick="submitTest()"
+                    class="px-20 py-8 bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white font-semibold text-3xl rounded-3xl shadow-2xl hover:scale-105 transition-all">
+                Finish Test • See My Result
+            </button>
+        </div>
+    </div>
+
+    <!-- RESULTS SCREEN -->
+    <div id="results-screen" class="hidden">
+        <div class="bg-slate-900 rounded-3xl shadow-2xl p-14 text-center">
+            <h2 class="text-5xl font-bold mb-8">Your Feeling vs Thinking Result</h2>
+            
+            <div class="flex justify-center gap-16 my-12">
+                <div>
+                    <div class="text-emerald-400 text-2xl font-medium">THINKING</div>
+                    <div id="thinking-score" class="text-7xl font-black mt-2">50%</div>
+                </div>
+                <div class="text-6xl text-slate-500 self-center">VS</div>
+                <div>
+                    <div class="text-rose-400 text-2xl font-medium">FEELING</div>
+                    <div id="feeling-score" class="text-7xl font-black mt-2">50%</div>
+                </div>
+            </div>
+
+            <div class="max-w-md mx-auto h-4 bg-slate-700 rounded-full overflow-hidden mb-12">
+                <div id="feeling-bar" class="h-full bg-gradient-to-r from-rose-500 to-pink-500 transition-all" style="width: 50%"></div>
+            </div>
+
+            <div id="result-description" class="text-xl leading-relaxed text-slate-200 max-w-2xl mx-auto"></div>
+
+            <div class="flex justify-center gap-6 mt-16">
+                <button onclick="copyResults()" class="px-12 py-6 bg-slate-800 rounded-3xl font-medium text-xl hover:bg-slate-700">📋 Copy Results</button>
+                <button onclick="saveAsImage()" class="px-12 py-6 bg-violet-600 text-white rounded-3xl font-medium text-xl hover:bg-violet-500">📸 Save as Image</button>
+            </div>
+            
+            <div class="text-center mt-12">
+                <button onclick="restartTest()" class="underline text-slate-400 hover:text-white">Retake Test</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// 40 Questions - 20 Thinking + 20 Feeling (clear & accurate)
+const questions = [
+    // Thinking-oriented (Low Feeling score)
+    {text: "I make decisions based on logic, facts, and objective analysis.", feeling: 0},
+    {text: "I prioritize truth and accuracy over people's feelings.", feeling: 0},
+    {text: "I can deliver criticism directly if it improves the outcome.", feeling: 0},
+    {text: "I focus on what is fair and consistent rather than what feels kind.", feeling: 0},
+    {text: "I separate my emotions from work and decision-making.", feeling: 0},
+    {text: "I believe rules should apply equally with no exceptions.", feeling: 0},
+    {text: "I value efficiency and results more than group harmony.", feeling: 0},
+    {text: "I stay calm and logical even when others are emotional.", feeling: 0},
+    {text: "I prefer direct communication, even if it's blunt.", feeling: 0},
+    {text: "I trust data and evidence over personal stories.", feeling: 0},
+    {text: "I can make tough decisions without worrying too much about feelings.", feeling: 0},
+    {text: "I focus on solving the problem rather than comforting people.", feeling: 0},
+    {text: "I believe honesty is always better than sparing someone's feelings.", feeling: 0},
+    {text: "I evaluate ideas based on how logical they are.", feeling: 0},
+    {text: "I am comfortable with conflict when it's necessary for the right result.", feeling: 0},
+    {text: "I prioritize justice over mercy in most situations.", feeling: 0},
+    {text: "I analyze pros and cons before considering emotional impact.", feeling: 0},
+    {text: "I don't let emotions cloud my judgment.", feeling: 0},
+    {text: "I prefer clear principles over personal exceptions.", feeling: 0},
+    {text: "I can give bad news straightforwardly without softening it too much.", feeling: 0},
+
+    // Feeling-oriented (High Feeling score)
+    {text: "I consider how my decisions will affect the emotions of others.", feeling: 100},
+    {text: "I try to maintain harmony and avoid hurting people's feelings.", feeling: 100},
+    {text: "I make choices based on what feels morally right to me.", feeling: 100},
+    {text: "I naturally notice when someone is upset or excluded.", feeling: 100},
+    {text: "I often put other people's needs before my own.", feeling: 100},
+    {text: "I value kindness and empathy more than strict logic.", feeling: 100},
+    {text: "I adjust my behavior to make others feel comfortable.", feeling: 100},
+    {text: "I feel bad when I have to disappoint or say no to someone.", feeling: 100},
+    {text: "I prioritize relationships and emotional connection.", feeling: 100},
+    {text: "I am deeply affected by the emotions of people around me.", feeling: 100},
+    {text: "I try to create a supportive and caring environment.", feeling: 100},
+    {text: "I make decisions with my heart more than my head.", feeling: 100},
+    {text: "I often ask myself how others will feel before deciding.", feeling: 100},
+    {text: "I prefer mercy and understanding over strict justice.", feeling: 100},
+    {text: "I avoid conflict to protect people's feelings.", feeling: 100},
+    {text: "I value personal stories and emotional experiences.", feeling: 100},
+    {text: "I find it important to express care and appreciation.", feeling: 100},
+    {text: "I tend to forgive easily to preserve relationships.", feeling: 100},
+    {text: "I focus on building emotional trust with others.", feeling: 100},
+    {text: "I choose words carefully so I don't offend anyone.", feeling: 100}
+];
+
+let userAnswers = new Array(questions.length).fill(50);
+
+function renderQuestions() {
+    const container = document.getElementById('questions-container');
+    let html = '';
+    questions.forEach((q, i) => {
+        const id = `q${i}`;
+        html += `
+            <div class="question-card rounded-3xl p-10">
+                <div class="text-lg leading-relaxed mb-8">${q.text}</div>
+                <div class="flex items-center gap-6">
+                    <span class="text-emerald-400 font-medium w-12 text-right">0</span>
+                    <input type="range" id="${id}" min="0" max="100" value="50"
+                           oninput="updateValue(this, ${i})" class="flex-1">
+                    <span class="text-violet-400 font-medium w-12">100</span>
+                </div>
+                <div class="text-center mt-6">
+                    <span id="${id}-val" class="text-4xl font-bold text-white">50</span>
+                    <span class="text-slate-400 text-xl">/100</span>
+                </div>
+            </div>`;
+    });
+    container.innerHTML = html;
+}
+
+function updateValue(slider, index) {
+    const val = parseInt(slider.value);
+    userAnswers[index] = val;
+    document.getElementById(slider.id + '-val').textContent = val;
+}
+
+function startTest() {
+    document.getElementById('start-screen').classList.add('hidden');
+    document.getElementById('rules-screen').classList.remove('hidden');
+}
+
+function checkConfirmation() {
+    const input = document.getElementById('confirm-input').value.trim().toLowerCase();
+    if (input === "confirm") {
+        document.getElementById('rules-screen').classList.add('hidden');
+        document.getElementById('test-screen').classList.remove('hidden');
+        renderQuestions();
+    } else {
+        alert("Please type exactly 'confirm' to continue.");
+    }
+}
+
+function submitTest() {
+    document.getElementById('test-screen').classList.add('hidden');
+    document.getElementById('results-screen').classList.remove('hidden');
+    showResults();
+}
+
+function calculateResult() {
+    let total = 0;
+    userAnswers.forEach(val => total += val);
+    const feelingScore = Math.round(total / questions.length);
+    const thinkingScore = 100 - feelingScore;
+    return { thinkingScore, feelingScore };
+}
+
+function showResults() {
+    const result = calculateResult();
+    
+    document.getElementById('thinking-score').textContent = result.thinkingScore + "%";
+    document.getElementById('feeling-score').textContent = result.feelingScore + "%";
+    document.getElementById('feeling-bar').style.width = result.feelingScore + "%";
+
+    let description = "";
+    if (result.feelingScore >= 70) {
+        description = "You have a strong <strong>Feeling</strong> preference. You make decisions based on values, empathy, and how they impact people. Harmony and relationships are very important to you.";
+    } else if (result.feelingScore >= 55) {
+        description = "You lean toward <strong>Feeling</strong>. You balance logic with empathy and often consider emotional impact when making decisions.";
+    } else if (result.feelingScore >= 45) {
+        description = "You are fairly balanced between <strong>Thinking</strong> and <strong>Feeling</strong>. You can use both objective logic and personal values depending on the situation.";
+    } else if (result.feelingScore >= 30) {
+        description = "You lean toward <strong>Thinking</strong>. You are mostly logical and objective, but you can still consider feelings when necessary.";
+    } else {
+        description = "You have a strong <strong>Thinking</strong> preference. You make decisions based on logic, fairness, and objective truth rather than emotions or personal impact.";
+    }
+
+    document.getElementById('result-description').innerHTML = description;
+}
+
+function copyResults() {
+    const r = calculateResult();
+    const text = `Feeling vs Thinking Test Result\n\nThinking: ${r.thinkingScore}%\nFeeling: ${r.feelingScore}%\n`;
+    navigator.clipboard.writeText(text).then(() => alert("Results copied!"));
+}
+
+function saveAsImage() {
+    html2canvas(document.getElementById('results-screen'), {scale: 2}).then(canvas => {
+        const a = document.createElement('a');
+        a.download = 'feeling-vs-thinking-results.png';
+        a.href = canvas.toDataURL();
+        a.click();
+    });
+}
+
+function restartTest() {
+    location.reload();
+}
+</script>
+</body>
+</html>
