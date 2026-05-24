@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Feeling vs Thinking Test • 40 Questions</title>
+    <title>Feeling vs Thinking Test • 60 Questions</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <style>
@@ -26,7 +26,7 @@
     <div id="start-screen">
         <div class="text-center mb-12">
             <h1 class="text-5xl font-bold">Feeling vs Thinking Test</h1>
-            <p class="mt-4 text-xl text-slate-300">40 Questions • MBTI Style</p>
+            <p class="mt-4 text-xl text-slate-300">60 Questions • Deep Insight</p>
             <p class="text-sm text-slate-400 mt-6">
                 <span class="text-emerald-400">0</span> = Does not describe me at all • 
                 <span class="text-violet-400">100</span> = Describes me perfectly
@@ -113,51 +113,71 @@
 </div>
 
 <script>
-// 40 Questions - 20 Thinking + 20 Feeling (clear & accurate)
+// 60 High-Quality Questions - 30 Thinking + 30 Feeling
 const questions = [
-    // Thinking-oriented (Low Feeling score)
-    {text: "I make decisions based on logic, facts, and objective analysis.", feeling: 0},
-    {text: "I prioritize truth and accuracy over people's feelings.", feeling: 0},
-    {text: "I can deliver criticism directly if it improves the outcome.", feeling: 0},
-    {text: "I focus on what is fair and consistent rather than what feels kind.", feeling: 0},
-    {text: "I separate my emotions from work and decision-making.", feeling: 0},
-    {text: "I believe rules should apply equally with no exceptions.", feeling: 0},
-    {text: "I value efficiency and results more than group harmony.", feeling: 0},
-    {text: "I stay calm and logical even when others are emotional.", feeling: 0},
-    {text: "I prefer direct communication, even if it's blunt.", feeling: 0},
-    {text: "I trust data and evidence over personal stories.", feeling: 0},
-    {text: "I can make tough decisions without worrying too much about feelings.", feeling: 0},
-    {text: "I focus on solving the problem rather than comforting people.", feeling: 0},
-    {text: "I believe honesty is always better than sparing someone's feelings.", feeling: 0},
-    {text: "I evaluate ideas based on how logical they are.", feeling: 0},
-    {text: "I am comfortable with conflict when it's necessary for the right result.", feeling: 0},
-    {text: "I prioritize justice over mercy in most situations.", feeling: 0},
-    {text: "I analyze pros and cons before considering emotional impact.", feeling: 0},
-    {text: "I don't let emotions cloud my judgment.", feeling: 0},
-    {text: "I prefer clear principles over personal exceptions.", feeling: 0},
-    {text: "I can give bad news straightforwardly without softening it too much.", feeling: 0},
+    // === THINKING ORIENTED ===
+    {text: "When making important decisions, I prioritize logical consistency over how people might feel.", feeling: 0},
+    {text: "I can remain objective even when the situation is emotionally charged.", feeling: 0},
+    {text: "I believe it's better to be truthful than to spare someone's feelings.", feeling: 0},
+    {text: "I focus more on whether something is fair than whether it feels kind.", feeling: 0},
+    {text: "I am comfortable giving direct feedback even if it might upset someone.", feeling: 0},
+    {text: "I tend to analyze situations using facts and evidence rather than emotions.", feeling: 0},
+    {text: "I value competence and effectiveness more than maintaining group harmony.", feeling: 0},
+    {text: "I can make hard choices without being overly influenced by sympathy.", feeling: 0},
+    {text: "I prefer clear rules that apply equally to everyone, even if it feels cold.", feeling: 0},
+    {text: "I separate my personal emotions from professional or logical decisions.", feeling: 0},
+    {text: "I respect people who are honest and direct more than those who are nice.", feeling: 0},
+    {text: "I tend to critique ideas based on their merit rather than who proposed them.", feeling: 0},
+    {text: "I believe justice should not be compromised for the sake of feelings.", feeling: 0},
+    {text: "I can stay emotionally detached when solving complex problems.", feeling: 0},
+    {text: "I prioritize long-term results over short-term emotional comfort.", feeling: 0},
+    {text: "I find it easy to tell someone they are wrong if the facts support it.", feeling: 0},
+    {text: "I value intellectual honesty more than emotional sensitivity.", feeling: 0},
+    {text: "I make decisions based on what is most rational, even if unpopular.", feeling: 0},
+    {text: "I am not easily swayed by emotional appeals or sob stories.", feeling: 0},
+    {text: "I prefer constructive criticism over sugarcoating the truth.", feeling: 0},
+    {text: "I focus on fixing the problem rather than comforting the person first.", feeling: 0},
+    {text: "I believe principles matter more than preserving relationships in some cases.", feeling: 0},
+    {text: "I can deliver bad news without excessive emotional softening.", feeling: 0},
+    {text: "I evaluate people based on their actions and results, not their intentions.", feeling: 0},
+    {text: "I remain calm and analytical during heated arguments.", feeling: 0},
+    {text: "I think fairness is more important than everyone feeling happy.", feeling: 0},
+    {text: "I trust logic more than intuition or gut feelings when deciding.", feeling: 0},
+    {text: "I am willing to hurt feelings if it leads to a better overall outcome.", feeling: 0},
+    {text: "I prefer objective standards over subjective personal values.", feeling: 0},
+    {text: "I can distance myself emotionally to see the bigger picture clearly.", feeling: 0},
 
-    // Feeling-oriented (High Feeling score)
-    {text: "I consider how my decisions will affect the emotions of others.", feeling: 100},
-    {text: "I try to maintain harmony and avoid hurting people's feelings.", feeling: 100},
-    {text: "I make choices based on what feels morally right to me.", feeling: 100},
-    {text: "I naturally notice when someone is upset or excluded.", feeling: 100},
-    {text: "I often put other people's needs before my own.", feeling: 100},
-    {text: "I value kindness and empathy more than strict logic.", feeling: 100},
-    {text: "I adjust my behavior to make others feel comfortable.", feeling: 100},
-    {text: "I feel bad when I have to disappoint or say no to someone.", feeling: 100},
-    {text: "I prioritize relationships and emotional connection.", feeling: 100},
-    {text: "I am deeply affected by the emotions of people around me.", feeling: 100},
-    {text: "I try to create a supportive and caring environment.", feeling: 100},
-    {text: "I make decisions with my heart more than my head.", feeling: 100},
-    {text: "I often ask myself how others will feel before deciding.", feeling: 100},
-    {text: "I prefer mercy and understanding over strict justice.", feeling: 100},
-    {text: "I avoid conflict to protect people's feelings.", feeling: 100},
-    {text: "I value personal stories and emotional experiences.", feeling: 100},
-    {text: "I find it important to express care and appreciation.", feeling: 100},
+    // === FEELING ORIENTED ===
+    {text: "I naturally consider how my decisions will emotionally affect other people.", feeling: 100},
+    {text: "I try to maintain harmony and avoid hurting others whenever possible.", feeling: 100},
+    {text: "I make decisions based on what aligns with my personal values and morals.", feeling: 100},
+    {text: "I am very aware of other people's emotional states and needs.", feeling: 100},
+    {text: "I often put the feelings and well-being of others before my own convenience.", feeling: 100},
+    {text: "I value kindness and empathy even more than being strictly correct.", feeling: 100},
+    {text: "I carefully choose my words to avoid offending or hurting anyone.", feeling: 100},
+    {text: "I feel personally affected when people around me are upset.", feeling: 100},
+    {text: "I prioritize emotional connection and understanding in my relationships.", feeling: 100},
+    {text: "I try to create peace and support in group situations.", feeling: 100},
+    {text: "I find it difficult to say no when someone needs emotional support.", feeling: 100},
+    {text: "I make choices that reflect compassion and care for others.", feeling: 100},
+    {text: "I believe understanding someone's feelings is more important than winning an argument.", feeling: 100},
     {text: "I tend to forgive easily to preserve relationships.", feeling: 100},
-    {text: "I focus on building emotional trust with others.", feeling: 100},
-    {text: "I choose words carefully so I don't offend anyone.", feeling: 100}
+    {text: "I am deeply moved by stories of human struggle or kindness.", feeling: 100},
+    {text: "I adjust my behavior to make sure others feel safe and respected.", feeling: 100},
+    {text: "I value emotional intelligence and sensitivity highly.", feeling: 100},
+    {text: "I try to make people feel heard and validated.", feeling: 100},
+    {text: "I prefer mercy and understanding over strict application of rules.", feeling: 100},
+    {text: "I naturally comfort others when they are going through difficult times.", feeling: 100},
+    {text: "I consider the human impact first when making tough choices.", feeling: 100},
+    {text: "I find it hard to stay detached when others are emotionally suffering.", feeling: 100},
+    {text: "I believe relationships matter more than being right in most situations.", feeling: 100},
+    {text: "I am warm, approachable, and nurturing toward others.", feeling: 100},
+    {text: "I often ask myself 'How would this make the other person feel?'", feeling: 100},
+    {text: "I prioritize emotional safety and trust in my interactions.", feeling: 100},
+    {text: "I tend to be gentle and supportive rather than direct and blunt.", feeling: 100},
+    {text: "I value authenticity and emotional honesty in relationships.", feeling: 100},
+    {text: "I try to create environments where people feel cared for.", feeling: 100},
+    {text: "I believe empathy is one of the most important qualities a person can have.", feeling: 100}
 ];
 
 let userAnswers = new Array(questions.length).fill(50);
